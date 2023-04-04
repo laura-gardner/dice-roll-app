@@ -2,27 +2,35 @@ import React, {useState} from "react";
 import Die from "./Die";
 
 const RollDice = () => {
+
+    const diceValues = ['one', 'two', 'three', 'four', 'five', 'six'] 
     const randomNumber = () => {
-        return Math.ceil(Math.random()*6)
+        return Math.floor(Math.random()*6)
     }
-    const [dieOne, setDieOne] = useState(1)
-    const [dieTwo, setDieTwo] = useState(1)
+    const [dieOne, setDieOne] = useState(diceValues[randomNumber()])
+    const [dieTwo, setDieTwo] = useState(diceValues[randomNumber()])
     const [isRolling, setIsRolling] = useState(false)
     
     const roll = () => {
-        setDieOne(randomNumber())
-        setDieTwo(randomNumber())
+        setIsRolling(true)
+        setDieOne(diceValues[randomNumber()])
+        setDieTwo(diceValues[randomNumber()])
+        setTimeout(() => {
+            setIsRolling(false)
+        }, 1000)
     }
 
     
     return (
         <div className="roll-dice-div">
             <div className="dice-div">
-                <Die value={dieOne}/>
-                <Die value={dieTwo}/>
+                <Die face={dieOne} rolling={isRolling}/>
+                <Die face={dieTwo} rolling={isRolling}/>
             </div>
             <div className="button-div">
-                <button onClick={roll}>Roll Dice!</button>
+                <button onClick={roll} disabled={isRolling}>
+                    {isRolling ? "Rolling..." : "Roll dice!"}
+                </button>
             </div>
             
         </div>
